@@ -1,0 +1,37 @@
+{
+  "name": "leaflet-polyline-hausdorffdistance",
+  "version": "0.1.0",
+  "description": "Compute distances between two Leaflet Polyline objects",
+  "main": "dist/L.Polyline.HausdorffDistance.min.js",
+  "scripts": {
+    "_browserify": "browserify -t browserify-shim src/L.Polyline.HausdorffDistance.js -o dist/L.Polyline.HausdorffDistance.js",
+    "_uglify": "uglifyjs dist/L.Polyline.HausdorffDistance.js -o dist/L.Polyline.HausdorffDistance.min.js",
+    "bundle": "npm run _browserify && npm run _uglify",
+    "jshint": "jshint src/L.Polyline.HausdorffDistance.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leaflet",
+    "hausdorff",
+    "distance",
+    "polyline"
+  ],
+  "author": "Thomas Muguet <hi@tmuguet.me>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tmuguet/Leaflet.Polyline.HausdorffDistance.git"
+  },
+  "homepage": "https://github.com/tmuguet/Leaflet.Polyline.HausdorffDistance",
+  "bugs": "https://github.com/tmuguet/Leaflet.Polyline.HausdorffDistance/issues",
+  "dependencies": {},
+  "browserify-shim": {
+    "leaflet": "global:L"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "browserify-shim": "^3.8.14",
+    "jshint": "^2.9.6",
+    "uglify-js": "^3.4.9"
+  }
+}
