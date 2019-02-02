@@ -4,10 +4,12 @@
   "description": "Compute distances between two Leaflet Polyline objects",
   "main": "dist/L.Polyline.HausdorffDistance.min.js",
   "scripts": {
-    "_browserify": "browserify -t browserify-shim src/L.Polyline.HausdorffDistance.js -o dist/L.Polyline.HausdorffDistance.js",
+    "_browserify": "browserify -t [ babelify --presets [ @babel/preset-env ] ] -t browserify-shim -p browserify-derequire src/L.Polyline.HausdorffDistance.js -o dist/L.Polyline.HausdorffDistance.js",
     "_uglify": "uglifyjs dist/L.Polyline.HausdorffDistance.js -o dist/L.Polyline.HausdorffDistance.min.js",
     "bundle": "npm run _browserify && npm run _uglify",
-    "jshint": "jshint src/L.Polyline.HausdorffDistance.js",
+    "eslint": "eslint src/*.js",
+    "validate": "npm run bundle && npm run eslint",
+    "version": "npm run validate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -24,14 +26,22 @@
   },
   "homepage": "https://github.com/tmuguet/Leaflet.Polyline.HausdorffDistance",
   "bugs": "https://github.com/tmuguet/Leaflet.Polyline.HausdorffDistance/issues",
-  "dependencies": {},
+  "dependencies": {
+    "leaflet": "^1.4.0"
+  },
   "browserify-shim": {
     "leaflet": "global:L"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "browserify-derequire": "^1.0.0",
     "browserify-shim": "^3.8.14",
-    "jshint": "^2.9.6",
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "uglify-js": "^3.4.9"
   }
 }
