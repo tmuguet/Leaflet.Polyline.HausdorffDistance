@@ -1,72 +1,65 @@
-(function() {
-  'use strict';
+const L = require('leaflet');
 
-  var L = require('leaflet');
+if (L.Polyline === undefined) {
+  throw new Error('Cannot find L.Polyline');
+}
 
-  if (L.Polyline === undefined) {
-    throw new Error('Cannot find L.Polyline');
-  }
+function getLatLngsFlatten(polyline) {
+  const latlngs = polyline.getLatLngs();
 
-  function getLatLngsFlatten(polyline) {
-    var latlngs = polyline.getLatLngs();
-
-    if (latlngs.length > 0 && Array.isArray(latlngs[0])) {
-      var result = [];
-      for (var j = 0; j < latlngs.length; j++) {
-        result = result.concat(latlngs[j]);
-      }
-
-      return result;
-    } else {
-      return latlngs;
+  if (latlngs.length > 0 && Array.isArray(latlngs[0])) {
+    let result = [];
+    for (let j = 0; j < latlngs.length; j += 1) {
+      result = result.concat(latlngs[j]);
     }
+
+    return result;
   }
+  return latlngs;
+}
 
-  L.Polyline.include({
-    distanceTo: function(o) {
-      var xLatLng = getLatLngsFlatten(this);
-      var yLatLng = getLatLngsFlatten(o);
+L.Polyline.include({
+  distanceTo(o) {
+    const xLatLng = getLatLngsFlatten(this);
+    const yLatLng = getLatLngsFlatten(o);
 
-      var distances = {};
+    const distances = {};
 
-      var sizeX = xLatLng.length;
-      var sizeY = yLatLng.length;
+    const sizeX = xLatLng.length;
+    const sizeY = yLatLng.length;
 
-      var supX = Number.MIN_VALUE;
-      var supY = Number.MIN_VALUE;
+    let supX = Number.MIN_VALUE;
+    let supY = Number.MIN_VALUE;
 
-      var x, y, key;
-
-      for (x = 0; x < sizeX; x++) {
-        var infY = Number.MAX_VALUE;
-        for (y = 0; y < sizeY; y++) {
-          key = x + '/' + y;
-          distances[key] = xLatLng[x].distanceTo(yLatLng[y]);
-          if (distances[key] < infY) {
-            infY = distances[key];
-          }
-        }
-
-        if (infY > supX) {
-          supX = infY;
+    for (let x = 0; x < sizeX; x += 1) {
+      let infY = Number.MAX_VALUE;
+      for (let y = 0; y < sizeY; y += 1) {
+        const key = `${x}/${y}`;
+        distances[key] = xLatLng[x].distanceTo(yLatLng[y]);
+        if (distances[key] < infY) {
+          infY = distances[key];
         }
       }
 
-      for (y = 0; y < sizeY; y++) {
-        var infX = Number.MAX_VALUE;
-        for (x = 0; x < sizeX; x++) {
-          key = x + '/' + y;
-          if (distances[key] < infX) {
-            infX = distances[key];
-          }
-        }
-
-        if (infX > supY) {
-          supY = infX;
-        }
+      if (infY > supX) {
+        supX = infY;
       }
-
-      return Math.max(supX, supY);
     }
-  });
-})();
+
+    for (let y = 0; y < sizeY; y += 1) {
+      let infX = Number.MAX_VALUE;
+      for (let x = 0; x < sizeX; x += 1) {
+        const key = `${x}/${y}`;
+        if (distances[key] < infX) {
+          infX = distances[key];
+        }
+      }
+
+      if (infX > supY) {
+        supY = infX;
+      }
+    }
+
+    return Math.max(supX, supY);
+  },
+});
