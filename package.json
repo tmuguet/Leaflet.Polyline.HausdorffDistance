@@ -1,6 +1,6 @@
 {
   "name": "leaflet-polyline-hausdorffdistance",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Compute distances between two Leaflet Polyline objects",
   "main": "dist/L.Polyline.HausdorffDistance.min.js",
   "scripts": {
